@@ -6,6 +6,7 @@ import type {
   PlatformStats,
   UserSearchResult,
 } from "./types";
+import type { LegalDocument } from "./legal";
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000/api";
@@ -69,6 +70,22 @@ export function getUser(token: string, userId: string) {
   return adminFetch<AdminUserDetail>(`/users/${userId}`, token);
 }
 
+export function reactivateUser(token: string, userId: string) {
+  return adminFetch<{ message: string; user: AdminUserDetail }>(
+    `/users/${userId}/reactivate`,
+    token,
+    { method: "PATCH" }
+  );
+}
+
+export function deactivateUser(token: string, userId: string) {
+  return adminFetch<{ message: string; user: AdminUserDetail }>(
+    `/users/${userId}/deactivate`,
+    token,
+    { method: "PATCH" }
+  );
+}
+
 export function setUserTier(
   token: string,
   userId: string,
@@ -120,4 +137,28 @@ export function getMaterial(token: string, materialId: string) {
 
 export function getLeaderboard(token: string, limit = 50) {
   return adminFetch<LeaderboardEntry[]>(`/leaderboard?limit=${limit}`, token);
+}
+
+export function getLegalDocuments(token: string) {
+  return adminFetch<{ documents: LegalDocument[] }>("/legal", token);
+}
+
+export function updateLegalDocument(
+  token: string,
+  slug: "terms" | "privacy",
+  content: {
+    title: string;
+    lastUpdated: string;
+    intro: string;
+    sections: LegalDocument["sections"];
+  }
+) {
+  return adminFetch<{ message: string; document: LegalDocument }>(
+    `/legal/${slug}`,
+    token,
+    {
+      method: "PUT",
+      body: JSON.stringify(content),
+    }
+  );
 }

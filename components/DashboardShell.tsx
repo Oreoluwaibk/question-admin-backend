@@ -13,6 +13,7 @@ const navItems = [
   { href: "/materials", label: "Materials" },
   { href: "/leaderboard", label: "Leaderboard" },
   { href: "/users", label: "Users" },
+  { href: "/legal", label: "Legal" },
 ];
 
 function NavLink({

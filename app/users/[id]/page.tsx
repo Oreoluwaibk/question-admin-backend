@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { ProtectedLayout } from "@/components/ProtectedLayout";
-import { Badge, Button, Card } from "@/components/ui";
+import { Badge, Button, Card, ConfirmDialog } from "@/components/ui";
 import {
   clearUserDevices,
+  deactivateUser,
   getUser,
+  reactivateUser,
   removeUserDevice,
   setUserTier,
 } from "@/lib/api";
@@ -27,6 +29,7 @@ export default function UserDetailPage() {
   const [error, setError] = useState("");
   const [actionMessage, setActionMessage] = useState("");
   const [busy, setBusy] = useState(false);
+  const [confirmDeactivate, setConfirmDeactivate] = useState(false);
 
   async function loadUser() {
     if (!accessToken || !params.id) return;
@@ -95,6 +98,41 @@ export default function UserDetailPage() {
     }
   }
 
+  async function handleReactivate() {
+    if (!accessToken || !user) return;
+    setBusy(true);
+    setActionMessage("");
+    setError("");
+
+    try {
+      await reactivateUser(accessToken, user.id);
+      setActionMessage("Account reactivated");
+      await loadUser();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to reactivate account");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleDeactivate() {
+    if (!accessToken || !user) return;
+    setBusy(true);
+    setActionMessage("");
+    setError("");
+
+    try {
+      await deactivateUser(accessToken, user.id);
+      setConfirmDeactivate(false);
+      setActionMessage("Account deactivated");
+      await loadUser();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to deactivate account");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <ProtectedLayout>
       <div className="space-y-6">
@@ -108,6 +146,11 @@ export default function UserDetailPage() {
           <h1 className="mt-3 text-xl font-semibold tracking-tight break-words sm:text-2xl">
             {user?.name ?? "User"}
           </h1>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {user && !user.isActive ? (
+              <Badge variant="danger">Deactivated</Badge>
+            ) : null}
+          </div>
           <p className="mt-1 text-sm text-[var(--muted)] break-all">
             {user?.email ?? "Loading..."}
           </p>
@@ -153,6 +196,48 @@ export default function UserDetailPage() {
                   <dd className="sm:text-right">{formatDate(user.lastSignInAt)}</dd>
                 </div>
               </dl>
+            </Card>
+
+            <Card>
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="font-medium">Account</h2>
+                <Badge variant={user.isActive ? "mint" : "danger"}>
+                  {user.isActive ? "Active" : "Deactivated"}
+                </Badge>
+              </div>
+
+              <dl className="mt-4 space-y-3 text-sm">
+                <div className="flex flex-col gap-1 sm:flex-row sm:justify-between sm:gap-4">
+                  <dt className="text-[var(--muted)]">Status</dt>
+                  <dd className="sm:text-right">
+                    {user.isActive
+                      ? "User can sign in and use the app"
+                      : `Deactivated on ${formatDate(user.deactivatedAt)}`}
+                  </dd>
+                </div>
+              </dl>
+
+              <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                {user.isActive ? (
+                  <Button
+                    variant="danger"
+                    disabled={busy}
+                    onClick={() => setConfirmDeactivate(true)}
+                    className="w-full sm:w-auto"
+                  >
+                    Deactivate account
+                  </Button>
+                ) : (
+                  <Button
+                    variant="primary"
+                    disabled={busy}
+                    onClick={handleReactivate}
+                    className="w-full sm:w-auto"
+                  >
+                    Reactivate account
+                  </Button>
+                )}
+              </div>
             </Card>
 
             <Card>
@@ -257,6 +342,16 @@ export default function UserDetailPage() {
           </div>
         ) : null}
       </div>
+
+      <ConfirmDialog
+        open={confirmDeactivate}
+        title="Deactivate account"
+        message={`Deactivate ${user?.name ?? "this user"}? They will be signed out on all devices and cannot use the app until you reactivate them.`}
+        confirmLabel="Deactivate"
+        onConfirm={handleDeactivate}
+        onCancel={() => setConfirmDeactivate(false)}
+        loading={busy}
+      />
     </ProtectedLayout>
   );
 }

@@ -89,6 +89,9 @@ export default function UsersPage() {
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
+                    {!user.isActive ? (
+                      <Badge variant="danger">Deactivated</Badge>
+                    ) : null}
                     <Badge variant={user.isPro ? "mint" : "slate"}>
                       {user.tier}
                     </Badge>

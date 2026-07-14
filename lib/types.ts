@@ -16,6 +16,8 @@ export type AdminUserSummary = {
   fieldOfStudy: string | null;
   occupation: string | null;
   createdAt: string | null;
+  deactivatedAt: string | null;
+  isActive: boolean;
   tier: "FREE" | "PRO";
   isPro: boolean;
   billingStatus: string | null;
