@@ -17,7 +17,7 @@ export function ProtectedLayout({ children }: { children: React.ReactNode }) {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[var(--background)] text-[var(--muted)]">
+      <div className="flex min-h-screen items-center justify-center bg-background text-muted">
         Loading...
       </div>
     );

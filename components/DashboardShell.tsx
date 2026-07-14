@@ -34,8 +34,8 @@ function NavLink({
         compact ? "px-3 py-2 text-sm" : "block px-3 py-2 text-sm"
       } ${
         active
-          ? "text-[var(--mint)]"
-          : "text-[var(--muted)] hover:text-[var(--foreground)]"
+          ? "text-mint"
+          : "text-muted hover:text-foreground"
       }`}
       style={active ? { background: Palette.mintSoft } : undefined}
     >
@@ -80,8 +80,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   }, [showSignOutConfirm, signingOut]);
 
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[var(--card)]/95 backdrop-blur-sm">
+    <div className="min-h-screen bg-background text-foreground">
+      <header className="sticky top-0 z-20 border-b border-border bg-(--card)/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
             <AppLogo size={36} className="h-8 w-8 sm:h-9 sm:w-9" />
@@ -89,21 +89,21 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
               <p className="truncate text-sm font-semibold sm:text-base">
                 Question Bank Admin
               </p>
-              <p className="truncate text-xs text-[var(--muted)]">
+              <p className="truncate text-xs text-muted">
                 {session?.user.email}
               </p>
             </div>
           </div>
           <button
             onClick={() => setShowSignOutConfirm(true)}
-            className="shrink-0 rounded-lg px-2 py-1 text-xs text-[var(--muted)] transition hover:bg-[var(--border)] hover:text-[var(--foreground)] sm:text-sm"
+            className="shrink-0 rounded-lg px-2 py-1 text-xs text-muted transition hover:bg-border hover:text-foreground sm:text-sm"
           >
             Sign out
           </button>
         </div>
 
-        <nav className="border-t border-[var(--border)] md:hidden">
-          <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="border-t border-border md:hidden">
+          <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-2 [-ms-overflow-style:none] scrollbar-none [&::-webkit-scrollbar]:hidden">
             {navItems.map((item) => (
               <NavLink
                 key={item.href}

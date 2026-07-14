@@ -35,17 +35,17 @@ export default function DashboardPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">Overview</h1>
-          <p className="mt-1 text-sm text-[var(--muted)]">
+          <p className="mt-1 text-sm text-muted">
             Platform metrics at a glance
           </p>
         </div>
 
         {loading ? (
-          <p className="text-sm text-[var(--muted)]">Loading stats...</p>
+          <p className="text-sm text-muted">Loading stats...</p>
         ) : null}
 
         {error ? (
-          <p className="rounded-xl border border-[var(--danger)] bg-[rgba(229,72,77,0.08)] px-4 py-3 text-sm text-[var(--danger)]">
+          <p className="rounded-xl border border-danger bg-[rgba(229,72,77,0.08)] px-4 py-3 text-sm text-danger">
             {error}
           </p>
         ) : null}
