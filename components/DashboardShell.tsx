@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { ConfirmDialog } from "@/components/ui";
+import { AppLogo } from "@/components/AppLogo";
 import { Palette } from "@/lib/theme";
 
 const navItems = [
@@ -82,15 +83,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[var(--card)]/95 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4">
           <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-            <div
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-xs font-bold sm:h-9 sm:w-9 sm:text-sm"
-              style={{
-                background: Palette.mintSoft,
-                color: Palette.mint,
-              }}
-            >
-              QB
-            </div>
+            <AppLogo size={36} className="h-8 w-8 sm:h-9 sm:w-9" />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold sm:text-base">
                 Question Bank Admin

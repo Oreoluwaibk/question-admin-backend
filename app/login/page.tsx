@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { Button, Input } from "@/components/ui";
-import { Palette } from "@/lib/theme";
+import { AppLogo } from "@/components/AppLogo";
 
 export default function LoginPage() {
   const { signIn, session, loading } = useAuth();
@@ -46,12 +46,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-[var(--background)] px-4 py-8">
       <div className="w-full max-w-md rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm sm:p-8">
         <div className="mb-8 flex items-center gap-3">
-          <div
-            className="flex h-11 w-11 items-center justify-center rounded-2xl text-sm font-bold"
-            style={{ background: Palette.mintSoft, color: Palette.mint }}
-          >
-            QB
-          </div>
+          <AppLogo size={44} priority />
           <div>
             <h1 className="text-xl font-semibold">Admin sign in</h1>
             <p className="text-sm text-[var(--muted)]">
