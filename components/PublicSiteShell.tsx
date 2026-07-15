@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { AppLogo } from "@/components/AppLogo";
+import { MARKETING_LINKS } from "@/lib/site";
 
 export function PublicSiteShell({
   children,
@@ -10,29 +10,40 @@ export function PublicSiteShell({
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border bg-card">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <Link href="/privacy" className="flex items-center gap-3">
+          <a
+            href={MARKETING_LINKS.home}
+            className="flex items-center gap-3"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <AppLogo size={36} />
             <span className="font-semibold">Question Bank</span>
-          </Link>
+          </a>
           <nav className="flex items-center gap-4 text-sm">
-            <Link
-              href="/privacy"
+            <a
+              href={MARKETING_LINKS.privacy}
               className="text-muted transition hover:text-foreground"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Privacy
-            </Link>
-            <Link
-              href="/delete-account"
+            </a>
+            <a
+              href={MARKETING_LINKS.deleteAccount}
               className="text-muted transition hover:text-foreground"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Delete account
-            </Link>
-            <Link
-              href="/terms"
+            </a>
+            <a
+              href={MARKETING_LINKS.terms}
               className="text-muted transition hover:text-foreground"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Terms
-            </Link>
+            </a>
           </nav>
         </div>
       </header>

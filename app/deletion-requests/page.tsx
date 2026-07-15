@@ -10,6 +10,7 @@ import {
   listDeletionRequests,
   rejectDeletionRequest,
 } from "@/lib/api";
+import { MARKETING_LINKS } from "@/lib/site";
 import type { DeletionRequest } from "@/lib/types";
 
 function formatDate(value: string | null) {
@@ -110,13 +111,14 @@ export default function DeletionRequestsPage() {
               accounts.
             </p>
           </div>
-          <Link
-            href="/delete-account"
+          <a
+            href={MARKETING_LINKS.deleteAccount}
             className="text-sm font-medium text-mint hover:underline"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Public deletion page ↗
-          </Link>
+          </a>
         </div>
 
         {message ? (

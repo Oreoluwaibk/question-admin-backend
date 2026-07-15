@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { ProtectedLayout } from "@/components/ProtectedLayout";
 import { Button, Card, Input } from "@/components/ui";
 import { getLegalDocuments, updateLegalDocument } from "@/lib/api";
+import { MARKETING_LINKS } from "@/lib/site";
 import type { LegalDocument } from "@/lib/legal";
 
 type EditableDocument = {
@@ -106,13 +107,33 @@ export default function LegalEditorPage() {
           </h1>
           <p className="mt-1 text-sm text-[var(--muted)]">
             Edit terms and privacy policy. Public pages:{" "}
-            <a href="/privacy" className="text-[var(--mint)] underline">
-              /privacy
+            <a
+              href={MARKETING_LINKS.privacy}
+              className="text-[var(--mint)] underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Privacy Policy
             </a>{" "}
             and{" "}
-            <a href="/terms" className="text-[var(--mint)] underline">
-              /terms
+            <a
+              href={MARKETING_LINKS.terms}
+              className="text-[var(--mint)] underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Terms & Conditions
+            </a>{" "}
+            on{" "}
+            <a
+              href={MARKETING_LINKS.home}
+              className="text-[var(--mint)] underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              oiquestionbank.netlify.app
             </a>
+            .
           </p>
         </div>
 
