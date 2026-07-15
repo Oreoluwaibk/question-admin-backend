@@ -65,6 +65,13 @@ export default function DashboardPage() {
             <StatCard label="Materials uploaded" value={stats.totalMaterials} />
             <StatCard label="Test attempts" value={stats.totalAttempts} />
             <StatCard label="Questions created" value={stats.totalQuestions} />
+            {typeof stats.pendingDeletionRequests === "number" ? (
+              <StatCard
+                label="Pending deletion requests"
+                value={stats.pendingDeletionRequests}
+                hint="Review in Deletion requests"
+              />
+            ) : null}
           </div>
         ) : null}
       </div>

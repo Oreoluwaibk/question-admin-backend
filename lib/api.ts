@@ -162,3 +162,49 @@ export function updateLegalDocument(
     }
   );
 }
+
+export function listDeletionRequests(
+  token: string,
+  params?: { status?: string; page?: number; limit?: number }
+) {
+  const search = new URLSearchParams();
+  if (params?.status) search.set("status", params.status);
+  if (params?.page) search.set("page", String(params.page));
+  if (params?.limit) search.set("limit", String(params.limit));
+
+  const query = search.toString();
+  return adminFetch<import("./types").DeletionRequestListResult>(
+    `/deletion-requests${query ? `?${query}` : ""}`,
+    token
+  );
+}
+
+export function completeDeletionRequest(
+  token: string,
+  requestId: string,
+  adminNotes?: string
+) {
+  return adminFetch<{ message: string }>(
+    `/deletion-requests/${requestId}/complete`,
+    token,
+    {
+      method: "POST",
+      body: JSON.stringify({ adminNotes }),
+    }
+  );
+}
+
+export function rejectDeletionRequest(
+  token: string,
+  requestId: string,
+  adminNotes?: string
+) {
+  return adminFetch<{ message: string }>(
+    `/deletion-requests/${requestId}/reject`,
+    token,
+    {
+      method: "PATCH",
+      body: JSON.stringify({ adminNotes }),
+    }
+  );
+}

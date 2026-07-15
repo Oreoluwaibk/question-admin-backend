@@ -6,6 +6,26 @@ export type PlatformStats = {
   totalAttempts: number;
   totalQuestions: number;
   signupsLast7Days: number;
+  pendingDeletionRequests?: number;
+};
+
+export type DeletionRequest = {
+  id: string;
+  user_id: string | null;
+  email: string;
+  reason: string | null;
+  source: string;
+  status: "pending" | "processing" | "completed" | "rejected";
+  admin_notes: string | null;
+  requested_at: string;
+  processed_at: string | null;
+};
+
+export type DeletionRequestListResult = {
+  requests: DeletionRequest[];
+  total: number;
+  page: number;
+  limit: number;
 };
 
 export type AdminUserSummary = {

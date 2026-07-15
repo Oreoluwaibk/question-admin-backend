@@ -22,6 +22,12 @@ export function PublicSiteShell({
               Privacy
             </Link>
             <Link
+              href="/delete-account"
+              className="text-muted transition hover:text-foreground"
+            >
+              Delete account
+            </Link>
+            <Link
               href="/terms"
               className="text-muted transition hover:text-foreground"
             >
