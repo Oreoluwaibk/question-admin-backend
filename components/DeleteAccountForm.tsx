@@ -32,14 +32,16 @@ export function DeleteAccountForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        label="Account email"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@example.com"
-        required
-      />
+      <label className="block space-y-2 text-sm">
+        <span className="font-medium text-foreground">Account email</span>
+        <Input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@example.com"
+          required
+        />
+      </label>
       <label className="block space-y-2 text-sm">
         <span className="font-medium text-foreground">
           Reason (optional)
