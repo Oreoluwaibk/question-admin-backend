@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PublicSiteShell } from "@/components/PublicSiteShell";
 import { DeleteAccountForm } from "@/components/DeleteAccountForm";
-import { fetchDeletionInfo } from "@/lib/publicApi";
-
-export const dynamic = "force-dynamic";
+import { DEFAULT_DELETION_INFO } from "@/lib/publicApi";
 
 export const metadata: Metadata = {
   title: "Delete Account & Data | Question Bank",
@@ -12,8 +10,8 @@ export const metadata: Metadata = {
     "Request deletion of your Question Bank account and associated personal data.",
 };
 
-export default async function DeleteAccountPage() {
-  const info = await fetchDeletionInfo();
+export default function DeleteAccountPage() {
+  const info = DEFAULT_DELETION_INFO;
 
   return (
     <PublicSiteShell>

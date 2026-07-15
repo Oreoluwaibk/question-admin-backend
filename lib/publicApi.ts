@@ -1,6 +1,3 @@
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000/api";
-
 export type DeletionInfo = {
   appName: string;
   supportEmail: string;
@@ -9,27 +6,86 @@ export type DeletionInfo = {
   retainedData: string[];
 };
 
-export async function fetchDeletionInfo(): Promise<DeletionInfo> {
-  const response = await fetch(`${API_URL}/account-deletion/info`, {
-    next: { revalidate: 3600 },
-  });
+export const DEFAULT_DELETION_INFO: DeletionInfo = {
+  appName: "Question Bank",
+  supportEmail: "oreoluwa.creatives@gmail.com",
+  processingDays: 30,
+  deletedData: [
+    "Account profile (name, email, phone, avatar, study preferences)",
+    "Uploaded study materials and extracted document text",
+    "Generated and saved practice questions",
+    "Test attempts, scores, and analytics",
+    "Subscription and device session records",
+  ],
+  retainedData: [
+    "Payment records required for tax, fraud prevention, or legal compliance may be kept for up to 7 years where applicable.",
+    "Anonymized aggregate statistics that cannot identify you.",
+  ],
+};
 
-  if (!response.ok) {
-    throw new Error("Could not load deletion information");
+function getApiUrl() {
+  return process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000/api";
+}
+
+function isReachableApiUrl(url: string) {
+  if (!url) return false;
+
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    return !["localhost", "127.0.0.1", "0.0.0.0"].includes(host);
+  } catch {
+    return false;
+  }
+}
+
+export async function fetchDeletionInfo(): Promise<DeletionInfo> {
+  const apiUrl = getApiUrl();
+
+  if (!isReachableApiUrl(apiUrl)) {
+    return DEFAULT_DELETION_INFO;
   }
 
-  return response.json();
+  try {
+    const response = await fetch(`${apiUrl}/account-deletion/info`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return DEFAULT_DELETION_INFO;
+    }
+
+    return (await response.json()) as DeletionInfo;
+  } catch {
+    return DEFAULT_DELETION_INFO;
+  }
 }
 
 export async function submitDeletionRequest(payload: {
   email: string;
   reason?: string;
 }) {
-  const response = await fetch(`${API_URL}/account-deletion/request`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+  const apiUrl = getApiUrl();
+
+  if (!isReachableApiUrl(apiUrl)) {
+    throw new Error(
+      "Deletion requests are temporarily unavailable. Email oreoluwa.creatives@gmail.com from your account address to request deletion."
+    );
+  }
+
+  let response: Response;
+
+  try {
+    response = await fetch(`${apiUrl}/account-deletion/request`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error(
+      "Could not reach the server. Email oreoluwa.creatives@gmail.com from your account address to request deletion."
+    );
+  }
 
   const data = await response.json().catch(() => ({}));
 
