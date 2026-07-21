@@ -7,6 +7,7 @@ import type {
   UserSearchResult,
 } from "./types";
 import type { LegalDocument } from "./legal";
+import type { AppVersionConfig } from "./appVersion";
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000/api";
@@ -205,6 +206,31 @@ export function rejectDeletionRequest(
     {
       method: "PATCH",
       body: JSON.stringify({ adminNotes }),
+    }
+  );
+}
+
+export function getAppVersionConfig(token: string) {
+  return adminFetch<{ config: AppVersionConfig }>("/app-version", token);
+}
+
+export function updateAppVersionConfig(
+  token: string,
+  payload: {
+    latestVersion: string;
+    minVersion: string;
+    forceUpdate: boolean;
+    updateMessage?: string | null;
+    iosStoreUrl?: string | null;
+    androidStoreUrl?: string | null;
+  }
+) {
+  return adminFetch<{ message: string; config: AppVersionConfig }>(
+    "/app-version",
+    token,
+    {
+      method: "PUT",
+      body: JSON.stringify(payload),
     }
   );
 }

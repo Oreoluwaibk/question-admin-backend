@@ -14,6 +14,7 @@ const navItems = [
   { href: "/leaderboard", label: "Leaderboard" },
   { href: "/users", label: "Users" },
   { href: "/deletion-requests", label: "Deletion requests" },
+  { href: "/app-version", label: "App version" },
   { href: "/legal", label: "Legal" },
 ];
 
